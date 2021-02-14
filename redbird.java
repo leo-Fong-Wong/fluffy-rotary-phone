@@ -4,9 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-
-
-public class redbird {
+public class redbird{
     public static void main(String[] args) {
         //開始數據
         int Power = 0; //力量
@@ -15,7 +13,7 @@ public class redbird {
         int life = (Power*2)+10; //生命上限
         int attack = life / 5; //攻擊
         int magic = (intel*2)+10; //魔力上限
-        int glift = life; //生命
+        int glife = life; //生命
         int gmagic = magic; //魔力
         int medi = 0; //藥
         int level = 1;//等級
@@ -31,7 +29,7 @@ public class redbird {
         
         int run = 0;
         while(run < 2){ //開始
-            
+
             System.out.println("1.地圖 2.背包 3.人物 4.等級 5.儲存 6.讀取");//菜單
             System.out.print("動作 :");
             var action = input.nextLine(); //菜單動作
@@ -41,7 +39,10 @@ public class redbird {
             switch (action){
                 
                 case "1": //地圖
-                    
+                    life = life + level;
+                    magic = magic + level;
+                    attack = life / 5;
+
                     System.out.println("1.菜單 2.近郊");
                     System.out.print("動作 :");
                     var mapaction = input.nextLine();//地圖動作
@@ -83,7 +84,7 @@ public class redbird {
                                                 break;
 
                                             case 1://遇怪野獸(p01)
-                                                int p01lift = (level+(int)(Math.random()*4))+3;
+                                                int p01lift = (level+(int)(Math.random()*4))+15;
                                                 for(; ; ){
                                                     if (p01lift<=0){
                                                         System.out.println("you win");
@@ -93,7 +94,7 @@ public class redbird {
                                                     System.out.println("-------------");
                                                     System.out.println("'野獸' : 生命:"+p01lift);
                                                     System.out.println("");
-                                                    System.out.print("'你' : 生命:"+glift+" ");
+                                                    System.out.print("'你' : 生命:"+glife+" ");
                                                     System.out.println("魔力"+gmagic);
                                                     System.out.println("-------------");
                                                     System.out.println("");
@@ -109,7 +110,18 @@ public class redbird {
 
                                                             case "2":
                                                                 System.out.println("擊中");
-                                                                p01lift = p01lift - (attack+(int)(Math.random()*3));
+                                                                int p01liftact = (attack+(int)(Math.random()*3)+attack);
+                                                                p01lift = p01lift - p01liftact;
+                                                                if(gmagic>magic){
+                                                                    gmagic = magic;
+                                                                }else if(gmagic==magic){
+                                                                    gmagic = magic;
+                                                                }else{
+                                                                    gmagic = gmagic +1;
+                                                                }
+                                                                System.out.println("'野獸' : 生命 -"+p01liftact);
+
+                                                                
                                                                 p01sleep = false;
                                                                 continue;
 
@@ -122,7 +134,7 @@ public class redbird {
                                                                         break;
                                                                     
                                                                     case "2":
-                                                                        if (glift< 5){
+                                                                        if (gmagic< 5){
                                                                             System.out.println("你沒有足夠的魔力");
                                                                             break;
                                                                         }else{  
@@ -153,7 +165,7 @@ public class redbird {
                                                                     if (p01 < 1){
                                                                         continue;
                                                                     }else{
-                                                                        glift = glift - p01act;
+                                                                        glife = glife - (p01act-(p01act-defense)/5);
                                                                         System.out.println("你的生命"+"-"+p01act);
                                                                         continue;
                                                                     }
@@ -167,7 +179,17 @@ public class redbird {
                                                                 int attackp01 = (int)(Math.random()*4);
                                                                     if (attackp01 <= 3){
                                                                         System.out.println("擊中");
-                                                                        p01lift = p01lift - (attack+(int)(Math.random()*3));
+                                                                        int p01liftact = (attack+(int)(Math.random()*3)+attack);
+                                                                        p01lift = p01lift - p01liftact;
+                                                                        if(gmagic>magic){
+                                                                            gmagic = magic;
+                                                                        }else if(gmagic==magic){
+                                                                            gmagic = magic;
+                                                                        }else{
+                                                                            gmagic = gmagic +1;
+                                                                        }
+                                                                        System.out.println("'野獸' : 生命 -"+p01liftact);
+                                                                        
                                                                     }else{//不擊中
                                                                         System.out.println("擊不中");
                                                                     }
@@ -176,7 +198,7 @@ public class redbird {
                                                                     if (p01 < 1){
                                                                     continue;
                                                                     }else{
-                                                                        glift = glift - p01act;
+                                                                        glife = glife - (p01act-(p01act-defense)/5);
                                                                         System.out.println("你的生命"+"-"+p01act);
                                                                         continue;
                                                                     }
@@ -190,7 +212,7 @@ public class redbird {
                                                                             break;
                                                                     
                                                                         case "2":
-                                                                            if (glift< 5){
+                                                                            if (gmagic< 5){
                                                                                 System.out.println("你沒有足夠的魔力");
                                                                                 break;
                                                                             }else{  
@@ -250,21 +272,27 @@ public class redbird {
                             System.out.println("0.菜單");
                             System.out.print("動作 :");
                             var use = input.nextLine();
+                            System.out.println(" ");
                             switch (use){
                                 case "0":
                                     break;
 
                                 case "1":
-                                    if (glift >= life){
+                                    if (glife >= life){
+                                        System.out.println("");
                                         System.out.println("不能用");
+                                        System.out.println("");
+
 
                                     }else{
                                         if(medi<0){
+                                            System.out.println("");
                                             System.out.println("不能用");
+                                            System.out.println("");
                                         
                                         }else{
                                             medi = medi - 1;
-                                            glift = glift +1;
+                                            glife = glife +1;
                                             System.out.println("'你' : 生命:"+"+"+1);
                                         }
                                     }
@@ -284,6 +312,10 @@ public class redbird {
                         System.out.println("力量"+life);
                         System.out.println("智力"+magic);
                         System.out.println("防禦"+defense);
+                        System.out.println("--------------------");
+                        System.out.println("生命"+life+"/"+glife);
+                        System.out.println("魔力"+magic+"/"+gmagic);
+                        System.out.println("--------------------");
                         System.out.println("1.菜單");
                         System.out.print("動作 :");
                         var whoaction = input.nextLine();//人物動作
@@ -304,8 +336,8 @@ public class redbird {
                     break;
 
                 case "4":
-                    System.out.println("tour level :"+level);
-                    System.out.println("exp : " + exp +"/"+exp2);
+                    System.out.println("your level :"+level);
+                    System.out.println("exp : " + exp2 +"/"+exp);
                     
 
                     System.out.println("");
